@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}우리 영화할래요?{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    a { color: white; }
+</style>
+{% endblock %}
+    
+{% block content %}
+<!--관리자아닌 사람이 new에 접근했을때-->
+{% if messages %}
+	{% for message in messages %}
+		<div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message|safe }}</div>
+	{% endfor %}
+{% endif %}
+
+<!--본문-->
+    <!-- ****** Header Area Start ****** -->
+    <div class="intro intro-carousel">
+      <div class="carousel-item-a intro-item bg-image" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('https://lumiere-a.akamaihd.net/v1/images/eu_avr-4_hero_r_c8d9b2e1.jpeg');background-repeat: no-repeat">
+        <div class="overlay overlay-a"></div>
+        <div class="intro-content display-table">
+          <div class="table-cell">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-8">
+                  <div class="intro-body">
+                    <p class="intro-title-top">Avengers: Endgame
+                      <br>2019</p>
+                    <h1 class="intro-title mb-4">
+                      <span class="color-b">Today's </span> Movie
+                      <br>Recommendation</h1>
+                    <p class="intro-subtitle intro-price">
+                      <a href="http://www.cgv.co.kr/movies/detail-view/?midx=81749"><span class="price-a"><b>영화 보러가기</b></span></a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+      </div>
+  </div>
+  </div>
+
+    <!-- ****** Welcome Post Area Start ****** -->
+    <h2 class="post-headline text-center" style="color:white">KOREA TOP 10 Movie</h2>
+        <div class="instargram_area owl-carousel section_padding_100_0 clearfix" id="portfolio">
+        {% for movie in top_ten %}
+        <!-- Instagram Item -->
+        <div class="instagram_gallery_item mx-1">
+            <div class="welcome-single-slide">
+            <!-- Post Thumb -->
+            <a href="{% url 'movies:movie_detail' movie.pk %}"><img src="{{ movie.poster_url }}" alt="{{ movie.title }} 포스터 사진"></a>
+            <!-- Overlay Text -->
+            <div class="project_title">
+                <div class="post-date-commnents d-flex">
+                    <a href="{% url 'movies:movie_detail' movie.pk %}">comment: {{ movie.comment_set.count }}</a>
+                    
+                    <a href="{% url 'movies:movie_detail' movie.pk %}">♥ {{ movie.like_users.all.count }}</a>
+                </div>
+                <a href="{% url 'movies:movie_detail' movie.pk %}">
+                    <h5>{{movie.title}}   -   {{movie.score}}</h5>
+                </a>
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <h2 class="post-headline text-center mt-5" style="color:white">My Favorite Genre</h2>
+    {% if user.is_authenticated %}
+     <div class="instargram_area owl-carousel section_padding_100_0 clearfix" id="portfolio">
+        {% for movie in genre_movie %}
+        <div class="instagram_gallery_item mx-1">
+            <div class="welcome-single-slide">
+            <!-- Post Thumb -->
+            <a href="{% url 'movies:movie_detail' movie.pk %}"><img src="{{ movie.poster_url }}" alt="{{ movie.title }} 포스터 사진"></a>
+            <!-- Overlay Text -->
+            <div class="project_title">
+                <div class="post-date-commnents d-flex">
+                    <a href="{% url 'movies:movie_detail' movie.pk %}">comment: {{ movie.comment_set.count }}</a>
+                    
+                    <a href="{% url 'movies:movie_detail' movie.pk %}">♥ {{ movie.like_users.all.count }}</a>
+                </div>
+                <a href="{% url 'movies:movie_detail' movie.pk %}">
+                    <h5>{{ movie.title }}   -   {{ movie.score }}</h5>
+                </a>
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="text-center">
+    <a href="{% url 'accounts:login' %}">내가 좋아하는 장르별 추천영화를 보려면 로그인하세요!</a>
+    </div>
+    {% endif %}
+    </div>
+
+    
+    <h2 class="post-headline text-center mt-5" style="color:white">My year of birth</h2>
+    {% if user.is_authenticated %}
+    <div class="instargram_area owl-carousel section_padding_100_0 clearfix" id="portfolio">
+        {% for movie in year_movie %}
+        <div class="instagram_gallery_item mx-1">
+            <div class="welcome-single-slide">
+            <!-- Post Thumb -->
+            <a href="{% url 'movies:movie_detail' movie.pk %}"><img src="{{ movie.poster_url }}" alt="{{ movie.title }} 포스터 사진"></a>
+            <!-- Overlay Text -->
+            <div class="project_title">
+                <div class="post-date-commnents d-flex">
+                    <a href="{% url 'movies:movie_detail' movie.pk %}">comment: {{ movie.comment_set.count }}</a>
+                    
+                    <a href="{% url 'movies:movie_detail' movie.pk %}">♥ {{ movie.like_users.all.count }}</a>
+                </div>
+                <a href="{% url 'movies:movie_detail' movie.pk %}">
+                    <h5>{{movie.title}}   -   {{movie.score}}</h5>
+                </a>
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center mb-5">
+    <a href="{% url 'accounts:login' %}">내가 태어난 해의 추천영화를 보려면 로그인하세요!</a>
+    </div>
+    {% endif %}
+    
+    <!-- ****** Footer Menu Area  ****** -->
+    <footer class="footer_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Copywrite Text -->
+                    <div class="copy_right_text text-center">
+                        <p>Copyright @2019 All rights reserved</p><br>
+                        <p>This Movie Site is made with Seungju <i class="fa fa-heart-o" aria-hidden="true"></i> Chaewon by <a href="https://www.ssafy.com/" target="_blank">SSAFY</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
